@@ -1,14 +1,18 @@
 package br.edu.ufabc.compiler.lexico;
 
-import br.edu.ufabc.compiler.lexico.enumeration.TK;
+import br.edu.ufabc.compiler.enumeration.TK;
 
 public class Token {
     private TK type;
     private String text;
+    private int line;
+    private int column;
 
-    public Token(TK type, String text) {
+    public Token(TK type, String text, int line, int column) {
         this.type = type;
         this.text = text;
+        this.line = line;
+        this.column = column - text.length();
     }
 
     public TK getType() {
@@ -27,8 +31,29 @@ public class Token {
         this.text = text;
     }
 
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
     @Override
     public String toString() {
-        return String.format("Token{type='%s', text=%s", type.name(), text);
+        return "Token{" +
+                "type=" + type +
+                ", text='" + text + '\'' +
+                ", line=" + line +
+                ", column=" + column +
+                '}';
     }
 }

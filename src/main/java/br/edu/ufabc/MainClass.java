@@ -1,7 +1,7 @@
 package br.edu.ufabc;
 
-import br.edu.ufabc.compiler.lexico.ContentScanner;
-import br.edu.ufabc.compiler.lexico.Token;
+import br.edu.ufabc.compiler.lexico.EmojiScanner;
+import br.edu.ufabc.compiler.parser.EmojiParser;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,17 +10,12 @@ public class MainClass {
     private static final Logger LOGGER = Logger.getLogger(MainClass.class.getName());
 
     public static void main(String[] args) {
-        ContentScanner sc = new ContentScanner("input.isi");
-        Token token;
+        EmojiScanner sc = new EmojiScanner("input.isi");
+        EmojiParser ep = new EmojiParser(sc);
         LOGGER.setLevel(Level.ALL);
         try {
-            do {
-                token = sc.nextToken();
-                if (token != null) {
-                    String value = token.toString();
-                    LOGGER.info(value);
-                }
-            } while (token != null);
+            ep.e();
+            LOGGER.info("sucesso");
         } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
         }

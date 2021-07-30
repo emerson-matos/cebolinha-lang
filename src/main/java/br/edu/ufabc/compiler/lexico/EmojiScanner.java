@@ -1,6 +1,6 @@
 package br.edu.ufabc.compiler.lexico;
 
-import br.edu.ufabc.compiler.lexico.enumeration.TK;
+import br.edu.ufabc.compiler.enumeration.TK;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,14 +8,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ContentScanner {
-    private static final Logger LOGGER = Logger.getLogger(ContentScanner.class.getName());
-    private static final List<Character> ALLOWED_OPERATORS = Arrays.asList('>', '<', '=', '!');
+public class EmojiScanner {
+    private static final Logger LOGGER = Logger.getLogger(EmojiScanner.class.getName());
+    private static final List<Character> ALLOWED_OPERATORS = Arrays.asList('>', '<', '=', '!', '+', '*', '/');
 
     private char[] content;
     private int pos;
+    private int column;
+    private int line;
 
-    public ContentScanner(String filename) {
+    public EmojiScanner(String filename) {
         try {
             String text = Files.readString(Paths.get(ClassLoader.getSystemResource(filename).toURI()));
             LOGGER.info("debug ---------");
@@ -23,6 +25,8 @@ public class ContentScanner {
             LOGGER.info("---------------");
             this.content = text.toCharArray();
             this.pos = 0;
+            this.column = 0;
+            this.line = 0;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -46,16 +50,16 @@ public class ContentScanner {
                     break;
                 case 2:
                     back();
-                    return new Token(TK.IDENTIFIER, textBuilder.toString());
+                    return new Token(TK.IDENTIFIER, textBuilder.toString(), line, column);
                 case 3:
                     state = getNextStateFromState3(currentChar, textBuilder);
                     break;
                 case 4:
                     back();
-                    return new Token(TK.NUMBER, textBuilder.toString());
+                    return new Token(TK.NUMBER, textBuilder.toString(), line, column);
                 case 5:
-                    textBuilder.append(currentChar);
-                    return new Token(TK.OPERATOR, textBuilder.toString());
+                    back();
+                    return new Token(TK.OPERATOR, textBuilder.toString(), line, column);
                 default:
                     throw new IllegalStateException("Unexpected value: " + state);
             }
@@ -67,25 +71,28 @@ public class ContentScanner {
         if (isDigit(currentChar)) {
             state = 3;
             textBuilder.append(currentChar);
-        } else if (!isChar(currentChar))
+        } else if (!isChar(currentChar)) {
+            back();
             state = 4;
-        else
+        } else
             throw new IllegalArgumentException("Unexpected number symbol: " + currentChar);
         return state;
     }
 
     private int getNextStateFromState1(char currentChar, StringBuilder textBuilder) {
         int state;
-        textBuilder.append(currentChar);
-        if (isChar(currentChar) || isDigit(currentChar))
+        if (isChar(currentChar) || isDigit(currentChar)) {
             state = 1;
-        else if (isSpace(currentChar) || isOperator(currentChar))
+            textBuilder.append(currentChar);
+        } else if (isSpace(currentChar) || isOperator(currentChar)) {
+            back();
             state = 2;
-        else
+        } else
             throw new IllegalArgumentException("Malformed identifier");
         return state;
     }
 
+    // lembre-se você é um aluno do ensino SUPERIOR
     private int getStateFromInitialState(char currentChar, StringBuilder textBuilder) {
         int state;
         if (isChar(currentChar)) {
@@ -96,16 +103,17 @@ public class ContentScanner {
             state = 3;
         } else if (isSpace(currentChar))
             state = 0;
-        else if (isOperator(currentChar))
+        else if (isOperator(currentChar)) {
+            textBuilder.append(currentChar);
             state = 5;
-        else {
+        } else {
             throw new IllegalArgumentException("Unexpected symbol: " + currentChar + " at " + pos);
         }
         return state;
     }
 
     private boolean isDigit(char c) {
-        return Character.isDigit(c);
+        return Character.isDigit(c) || c == '.';
     }
 
     private boolean isChar(char c) {
@@ -117,11 +125,19 @@ public class ContentScanner {
     }
 
     private boolean isSpace(char c) {
+        if (c == '\n' || c == '\r') {
+            line++;
+            column = 0;
+        }
         return Character.isWhitespace(c);
     }
 
     private char nextChar() {
-        return content[pos++];
+        if (!isEOF()) {
+            column++;
+            return content[pos++];
+        }
+        return ' ';
     }
 
     private boolean isEOF() {
@@ -129,6 +145,7 @@ public class ContentScanner {
     }
 
     private void back() {
+        column--;
         pos--;
     }
 }
