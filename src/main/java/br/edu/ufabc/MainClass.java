@@ -10,7 +10,7 @@ public class MainClass {
     private static final Logger LOGGER = Logger.getLogger(MainClass.class.getName());
 
     public static void main(String[] args) {
-        EmojiScanner sc = new EmojiScanner("input.isi");
+        EmojiScanner sc = new EmojiScanner("input.emo");
         EmojiParser ep = new EmojiParser(sc);
         LOGGER.setLevel(Level.ALL);
         try {
