@@ -1,0 +1,13 @@
+ploglama
+    numelo a, raul, c, b;
+    palavla t1 = 'raul';
+    leia(a);
+    leia(b);
+
+    a=1.0*2/3+2-1;
+    se (a == 5) { escleva(a); escleva(c); }
+    se (b == 5) { escleva(b); } senao { escleva(a); }
+    escleva(a);
+    escleva(b);
+    pala(raul = 1.0 ; raul < 32 ; raul++){escleva(t1);}
+fimploglama;
