@@ -1,14 +1,14 @@
 package br.edu.ufabc.antlr.datastructures;
 
-public class EmojiLangVariable extends EmojiLangSymbol {
+public class CebolinhaLangVariable extends CebolinhaLangSymbol {
 
-    public static final int NUMBER=0;
-    public static final int TEXT=1;
+    public static final int NUMBER = 0;
+    public static final int TEXT = 1;
 
     private int type;
     private String value;
 
-    public EmojiLangVariable(String name, int type, String value) {
+    public CebolinhaLangVariable(String name, int type, String value) {
         super(name);
         this.type = type;
         this.value = value;
@@ -31,10 +31,21 @@ public class EmojiLangVariable extends EmojiLangSymbol {
     }
 
     @Override
+    public String generetaCode() {
+        String str = "";
+        if (type == NUMBER) {
+            str = "Double ";
+        } else if (type == TEXT) {
+            str = "String ";
+        }
+        return str + super.name + " = " + value + ";\n";
+    }
+
+    @Override
     public String toString() {
-        return "EmojiLangeVariable{" +
+        return "CebolinhaLangValiable{" +
                 "name=" + name +
-                "type=" + type +
+                ", type=" + type +
                 ", value='" + value + '\'' +
                 '}';
     }

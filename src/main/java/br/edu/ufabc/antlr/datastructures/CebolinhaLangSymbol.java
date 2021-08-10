@@ -1,11 +1,13 @@
 package br.edu.ufabc.antlr.datastructures;
 
-public abstract class EmojiLangSymbol {
+public abstract class CebolinhaLangSymbol {
     protected String name;
 
-    EmojiLangSymbol(String name) {
+    CebolinhaLangSymbol(String name) {
         this.name = name;
     }
+
+    public abstract String generetaCode();
 
     public String getName() {
         return name;
@@ -17,7 +19,7 @@ public abstract class EmojiLangSymbol {
 
     @Override
     public String toString() {
-        return "EmojiLangSymbol{" +
+        return "CebolinhaLangSymbol{" +
                 "name='" + name + '\'' +
                 '}';
     }
