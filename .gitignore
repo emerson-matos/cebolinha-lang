@@ -222,3 +222,5 @@ gradle-app.setting
 **/build/
 
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,intellij,windows,linux,macos
+
+src/main/java/MainClass.java
