@@ -7,11 +7,13 @@ public class CebolinhaLangVariable extends CebolinhaLangSymbol {
 
     private int type;
     private String value;
+    private Boolean isUsed;
 
     public CebolinhaLangVariable(String name, int type, String value) {
         super(name);
         this.type = type;
         this.value = value;
+        this.isUsed = false;
     }
 
     public int getType() {
@@ -28,6 +30,14 @@ public class CebolinhaLangVariable extends CebolinhaLangSymbol {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public void setUsed() {
+        this.isUsed = true;
+    }
+
+    public Boolean isUsed() {
+        return isUsed;
     }
 
     @Override

@@ -30,7 +30,15 @@ public class CebolinhaLangSymbolTable {
         return table.get(symbolName);
     }
 
-    public Collection<CebolinhaLangSymbol> iterator(){
+    public CebolinhaLangSymbol updateUsage(String symbol) {
+        CebolinhaLangSymbol variable = table.get(symbol);
+        if (variable instanceof CebolinhaLangVariable) {
+            ((CebolinhaLangVariable) variable).setUsed();
+        }
+        return table.replace(symbol, variable);
+    }
+
+    public Collection<CebolinhaLangSymbol> iterator() {
         return table.values();
     }
 }
