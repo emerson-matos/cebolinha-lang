@@ -6,6 +6,8 @@
 
 <img src="https://arquivos.tribunadepetropolis.com.br/media/2020/10/09051143/1ed573d07a66f0dfd57012f041738d76-900x675.jpg" alt="cebolinha" title="cebolinha" />
 
+Link do video: https://youtu.be/IaX7zLl3ch0 
+
 PARTICIPANTES
 
 DIURNO
