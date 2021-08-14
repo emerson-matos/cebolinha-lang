@@ -6,6 +6,15 @@
 
 <img src="https://arquivos.tribunadepetropolis.com.br/media/2020/10/09051143/1ed573d07a66f0dfd57012f041738d76-900x675.jpg" alt="cebolinha" title="cebolinha" />
 
+PARTICIPANTES
+
+DIURNO
+VITOR GUILHERME ANTUNES 11071815
+
+NOTURNO
+EMERSON ALMEIDA MATOS 11101015
+KAIQUE AUGUSTO IWATA 210719615
+RAUL TEODORO MACHADO 11112815
 
 |#|Itens Obrigatórios|Entregue|
 |---|---|---|
