@@ -161,15 +161,19 @@ expr        :   termo
                     termo
                 )*
             ;
+
 termo       :   ID     { verificaId(_input.LT(-1).getText());
                          _exprContent += _input.LT(-1).getText();
                        }
             |   NUMBER { _exprContent += _input.LT(-1).getText();}
+            | STRING_VAL        { _exprContent += _input.LT(-1).getText();}
             ;
 OP_CHANGE	:	'++'
 			|	'--'
 			;
-FOR        :   'pala'
+STRING_VAL  : '"' ([a-z]|[A-Z]|[0-9]|' ')* '"'
+			;
+FOR         :   'pala'
             ;
 VIR         :   ','
             ;
