@@ -1,6 +1,6 @@
 ploglama
     numelo a, raul, c, b;
-    palavla t1;
+    palavla t1, t57;
     t1 = "plofessol Isidlo me da um A";
     leia(a);
     leia(b);

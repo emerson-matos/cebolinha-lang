@@ -1,9 +1,0 @@
-programa
-    leia(a);
-    leia(b);
-
-    a=1*2/3+2-1;
-
-    escreva(a);
-    escreva(b);
-fimprog;

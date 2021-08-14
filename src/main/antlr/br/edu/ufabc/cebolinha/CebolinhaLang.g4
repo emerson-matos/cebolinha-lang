@@ -48,11 +48,26 @@ private void verificaId(String symbolName) {
 }
 
 public void showCommands(Logger logger) {
+    checkVariableUsage(logger);
     program.getCommandList().stream().map(Object::toString).forEach(logger::info);
 }
 
 public void generateCode() {
     program.generateTarget();
+}
+
+public void atualizaUso(String valor) {
+    _symbolTable.updateUsage(valor);
+}
+
+public void checkVariableUsage(Logger logger) {
+    _symbolTable.iterator().forEach((item) -> {
+                if (item instanceof CebolinhaLangVariable && !((CebolinhaLangVariable) item).isUsed()) {
+                    // Call warning method
+                    logger.warning("Valiável " + item.getName() + " nunca usada");
+                }
+            }
+    );
 }
 }
 
@@ -90,11 +105,10 @@ cmd         :   cmdLeitura
 cmdLeitura  :   'leia' AP
                        ID { verificaId(_input.LT(-1).getText());
                             _readId = _input.LT(-1).getText();
+                            atualizaUso(_readId);
                             }
                        FP
-                       SC {
-                                allCommands.peek().add(new CommandRead(_readId, _symbolTable.getSymbol(_readId)));
-                          }
+                       SC { allCommands.peek().add(new CommandRead(_readId, _symbolTable.getSymbol(_readId))); }
             ;
 cmdEscrita  :   'escleva' AP
                           ID {  verificaId(_input.LT(-1).getText());
@@ -109,7 +123,7 @@ cmdAttrib    :   ID { verificaId(_input.LT(-1).getText());
                       _exprId = _input.LT(-1).getText();
                     }
                 ATTR    { _exprContent = ""; }
-                expr
+                expr    { atualizaUso(_exprId); }
                 SC { allCommands.peek().add(new CommandAtribuicao(_exprId, _exprContent)); }
             ;
 cmdSelecao  :   'se' AP
@@ -132,7 +146,7 @@ cmdFor: 	FOR
                               _varValue = null;
                             }
             ATTR 			{ _exprContent = ""; }
-            expr
+            expr            { atualizaUso(_varName); }
             SC				{ _exprFor = _varName + " = " + _exprContent + ";";
                             }
             ID 				{ _exprFor += _input.LT(-1).getText();
@@ -162,11 +176,11 @@ expr        :   termo
                 )*
             ;
 
-termo       :   ID     { verificaId(_input.LT(-1).getText());
-                         _exprContent += _input.LT(-1).getText();
-                       }
-            |   NUMBER { _exprContent += _input.LT(-1).getText();}
-            | STRING_VAL        { _exprContent += _input.LT(-1).getText();}
+termo       :   ID          { verificaId(_input.LT(-1).getText());
+                              _exprContent += _input.LT(-1).getText();
+                            }
+            |   NUMBER      { _exprContent += _input.LT(-1).getText();}
+            |   STRING_VAL  { _exprContent += _input.LT(-1).getText();}
             ;
 OP_CHANGE	:	'++'
 			|	'--'
